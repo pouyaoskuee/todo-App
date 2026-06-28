@@ -12,42 +12,48 @@
 
 
 
-<section class="section">
+<section class="main">
     <header>
         <h1>Todolist</h1>
     </header>
-    <div class="container">
-        <div class="add">
-            <form class="add__form">
-                <label class="visually-hidden" for="task">Task</label>
-                <input id="task" type="text" class="input" placeholder="What needs to be done?">
-                <button type="submit" class="btn">Add</button>
-            </form>
-        </div>
-        <div class="select">
-            <label class="visually-hidden" for="sort">Status</label>
-            <select id="sort" class="filter-todos" name="todos">
-                <option value="all">all</option>
-                <option value="completed">completed</option>
-                <option value="uncompleted">uncompleted</option>
-            </select>
-        </div>
-    </div>
+    <form class="add__form">
+        <label class="visually-hidden" for="task">Task</label>
+        <input id="task" type="text" class="input" placeholder="What needs to be done?">
+        <button type="submit">Add</button>
+
+        <label class="visually-hidden" for="sort">Status</label>
+        <select id="sort" class="filter-todos" name="todos">
+            <option value="all">all</option>
+            <option value="completed">completed</option>
+            <option value="uncompleted">uncompleted</option>
+        </select>
+    </form>
 
 
-    <div class="list">
-        <form class="list__form">
+        <div class="list__form">
             <ul class="list__ul">
-<!--                <li class="list__li">-->
-<!--                    <p class="list__title">title</p>-->
-<!--                    <span class="list__data">1384/33/4/4</span>-->
-<!--                    <button class="check">&check;</button>-->
-<!--                    <button class="remove">&times;</button>-->
-<!--                </li>-->
+
             </ul>
+        </div>
+
+</section>
+
+
+
+<section class="modal">
+    <div class="modal__container">
+        <form>
+            <div class="modal__header">
+                <label class="" for="edite"> edit your note</label>
+                <span class="remove modal__close">&times;</span>
+            </div>
+            <input class="edit__input" id="edite" type="text" placeholder="type your new note ">
         </form>
     </div>
 </section>
+
+<div class="blur"></div>
+
 
 
 
