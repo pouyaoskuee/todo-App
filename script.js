@@ -1,11 +1,12 @@
-let default_value='all'
 
 const todoInput = document.querySelector('.input');
 const todoForm = document.querySelector('.add__form');
 const todoList = document.querySelector('.list__ul');
 const sort = document.querySelector('.filter-todos');
-const editform = document.querySelector('.modal__form');
-const editinput = document.querySelector('.edit__input');
+
+const editForm = document.querySelector('.modal__form');
+const editInput = document.querySelector('.edit__input');
+
 const modal = document.querySelector('.modal');
 const blur = document.querySelector('.blur');
 const closeModal = document.querySelector('.modal__close');
@@ -13,21 +14,17 @@ const closeModal = document.querySelector('.modal__close');
 
 
 
-
+document.addEventListener('DOMContentLoaded', ()=> addToDom(getAllTodos()))
 todoForm.addEventListener('submit', addTodo )
-
 closeModal.addEventListener('click', ocClose)
 blur.addEventListener('click', ocClose)
 
-sort.addEventListener('change', (e)=>{
-    default_value = e.target.value;
-    sortchange()
+let default_value
+sort.addEventListener('change', (e)=> {
+    default_value = e?.target?.value || "all"
+    sortChange()
 })
 
-document.addEventListener('DOMContentLoaded', (e)=>{
-    const todos = getalltodos()
-    addToDom(todos)
-})
 
 
 
@@ -45,12 +42,9 @@ function addTodo(e){
         isCompleted: false,
     }
 
-
-
-    sevetodo(newTodo)
-    sortchange()
+    saveTodo(newTodo)
+    sortChange()
     todoInput.value = '';
-
 }
 
 
@@ -68,110 +62,101 @@ function addToDom(todos){
 
     })
     todoList.innerHTML = result;
+
+
     const remove=document.querySelectorAll('.remove');
     remove.forEach((item)=>{
-        item.addEventListener('click', taskremove);
+        item.addEventListener('click', taskRemove);
     })
 
     const check=document.querySelectorAll('.check');
     check.forEach((item)=>{
-        item.addEventListener('click' , taskcheck)
+        item.addEventListener('click' , taskCheck)
     })
 
     const edit=document.querySelectorAll('.edit');
     edit.forEach((item)=>{
-        item.addEventListener('click', taskedit)
+        item.addEventListener('click', taskEdit)
     })
 
 }
 
 
 
-function sortchange(){
-    const todos = getalltodos()
+function sortChange(){
+
+    const todos = getAllTodos()
     switch (default_value){
         case 'all':{
             addToDom(todos)
             break;
         }
         case 'completed':{
-            const filtertodo=todos.filter((t)=>(t.isCompleted))
-            console.log(filtertodo)
-            addToDom(filtertodo)
+            addToDom(todos.filter((t)=>(t.isCompleted)))
             break;
         }
         case 'uncompleted':{
-            const filtertodo=todos.filter((t)=>(!t.isCompleted))
-            console.log(filtertodo)
-            addToDom(filtertodo)
+            addToDom(todos.filter((t)=>(!t.isCompleted)))
             break;
 
         }
         default: addToDom(todos)
     }
-
 }
 
 
-function taskremove(e){
-    let todos = getalltodos()
+function taskRemove(e){
+    let todos = getAllTodos()
     e.preventDefault();
-    const btnid= Number(e.target.dataset.todoId);
-    const filtered=todos.filter((t)=>(t.id!==btnid))
-    todos=filtered
-    sevealltodo(todos)
-    sortchange(todos)
+    saveAllTodos(todos.filter((t)=>(t.id!==Number(e.target.dataset.todoId))))
+    sortChange()
 }
 
 
 
-function taskcheck(e){
-    let todos = getalltodos()
+function taskCheck(e){
+    let todos = getAllTodos()
     e.preventDefault();
-    const btnid= Number(e.target.dataset.todoId);
-    const todo = todos.find((t)=>(t.id===btnid))
+    const todo = todos.find((t)=>(t.id===Number(e.target.dataset.todoId)))
     todo.isCompleted=!todo.isCompleted;
-    sevealltodo(todos)
-    sortchange(todos)
+    saveAllTodos(todos)
+    sortChange()
 }
 
-
-function taskedit(e){
-    let todos = getalltodos()
+function taskEdit(e){
+    let todos = getAllTodos()
     e.preventDefault();
-    const btnid= Number(e.target.dataset.todoId);
-    const todo = todos.find((t)=>(t.id===btnid))
-    black()
-    editform.addEventListener('submit',()=>{
-        todo.title= editinput.value
-        sevealltodo(todos)
-        sortchange(todos)
-    })
+    onOpen()
+    const todo = todos.find((t)=> t.id===Number(e.target.dataset.todoId))
+    editInput.value = todo.title;
+    editForm.addEventListener('submit', (e)=>{
+        e.preventDefault()
+        todo.title=editInput.value
+        saveAllTodos(todos)
+        addToDom(todos)
+        ocClose()
+    });
 
 }
 
-function black(){
+
+function getAllTodos(){
+    return JSON.parse(localStorage.getItem('todos')) || [];
+}
+
+function saveTodo(todo){
+    const saveTodos= getAllTodos()
+    saveTodos.push(todo)
+    localStorage.setItem('todos',JSON.stringify(saveTodos))
+}
+
+function saveAllTodos(todos){
+    localStorage.setItem('todos',JSON.stringify(todos))
+}
+
+function onOpen(){
     modal.classList.toggle('block');
     blur.classList.toggle('block');
-}
-
-
-
-
-function getalltodos(){
-    const sevedtodos=JSON.parse(localStorage.getItem('todos')) || [];
-    return sevedtodos;
-}
-
-function sevetodo(todo){
-    const sevetodos= getalltodos()
-    sevetodos.push(todo)
-    localStorage.setItem('todos',JSON.stringify(sevetodos))
-    return sevetodos;
-}
-
-function sevealltodo(todos){
-    localStorage.setItem('todos',JSON.stringify(todos))
 }
 
 function ocClose(){
