@@ -25,9 +25,11 @@ A simple Todo application built with JavaScript that allows users to create, com
 Todo-App/
 │
 ├── index.html
-├── style.css
-├── script.js
-└── README.md
+├── README.md
+├── css
+│   └── style.css
+└── js
+    └── script.js
 ```
 
 ## 📸 Screenshot
